@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  api-example: API Example
+
+Parameters:
+  Stage:
+    Type: String
+    Default: development
+    AllowedValues:
+      - development
+      - staging
+      - production
+
+Conditions:
+  IsProductionStage: !Equals [!Ref Stage, production]
+
+Resources:
+  HttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      DefaultRouteSettings:
+        DetailedMetricsEnabled: true
+      Domain:
+        CertificateArn: arn:aws:acm:us-east-1:000000000000:certificate/be8e5595-4771-4408-9ec2-547a2230bdfds
+        DomainName: !Ref DomainName
+        EndpointConfiguration: REGIONAL
+        Route53:
+          HostedZoneId: Z1OLBJHSKHIU98
